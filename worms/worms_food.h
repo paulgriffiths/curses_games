@@ -33,7 +33,7 @@ void worms_draw_food(void);
  */
 bool worms_food_here(const int x, const int y);
 
-/*
+/*!
  * \brief       Returns the total number of pieces of food eaten.
  * \details     Returns the total number of pieces of food eaten since
  * the start of the game.

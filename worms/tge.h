@@ -14,7 +14,7 @@
  * of asynchronously updating the game while waiting on user input.
  *
  * An initial naive implementation may be to implement the game timer
- * using SIGALRM, and update the screen in the signal handler, while
+ * using `SIGALRM`, and update the screen in the signal handler, while
  * simply blocking on user input in the main thread. However, the curses
  * functions are not re-entrant, and neither are many standard library
  * functions, so this approach is not reliable. Similar objections would
@@ -25,7 +25,7 @@
  * blocking, which would be an unnecessary waste of processor time.
  *
  * The solution here is to wait for input with `select()` to avoid
- * blocking on any input. The game timer is implemented with SIGALRM, and
+ * blocking on any input. The game timer is implemented with `SIGALRM`, and
  * the signal handler simply sets an "updated needed" variable and has
  * the automatic side-effect of interrupting `select()` (note: portable
  * curses programs cannot make any assumptions about whether handled signals
@@ -34,7 +34,7 @@
  * The library implements a game loop which begins by checking if a screen
  * update is necessary. If it is, the screen is updated, and the loop
  * re-entered. If it is not, the loop waits on `select()`. If no input is
- * entered, `select()` will interrupt on handling SIGALRM and continue to the
+ * entered, `select()` will interrupt on handling `SIGALRM` and continue to the
  * next iteration of the loop, and the screen will be updated again. If
  * input is entered, `select()` will return and the input can be obtained
  * without blocking. 
