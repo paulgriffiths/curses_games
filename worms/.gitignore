@@ -1,3 +1,7 @@
 # Executables
 worms
 
+# Doxygen folders
+html
+latex
+
