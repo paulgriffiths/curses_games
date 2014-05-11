@@ -22,7 +22,7 @@ C_DEBUG_FLAGS=-ggdb -DDEBUG -DDEBUG_ALL
 C_RELEASE_FLAGS=-O3 -DNDEBUG
 
 # Linker flags
-LDFLAGS=-lncurses 
+LDFLAGS=-L$(HOME)/lib/c -lpg_curses_tge -lcurses
 
 # Object code files
 OBJS=main.o

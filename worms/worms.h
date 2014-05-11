@@ -10,7 +10,7 @@
 #ifndef PG_WORMS_GAME_WORMS_H
 #define PG_WORMS_GAME_WORMS_H
 
-#include "tge.h"
+#include <paulgrif/tge.h>
 #include "worms_game.h"
 #include "worms_screen.h"
 #include "worms_time.h"
