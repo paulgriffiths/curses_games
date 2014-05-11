@@ -1,0 +1,13 @@
+# Doxygen configuration file for Worms! project
+
+PROJECT_NAME="Worms!"
+PROJECT_BRIEF="Worms game using the ncurses library."
+OPTIMIZE_OUTPUT_FOR_C=YES
+EXTRACT_ALL=YES
+EXTRACT_STATIC=YES
+OUTPUT_LANGUAGE=English
+INPUT=./
+FILE_PATTERNS=*.c *.h
+GENERATE_HTML=YES
+REPEAT_BRIEF=NO
+HAVE_DOT=YES
