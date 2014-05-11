@@ -11,7 +11,7 @@
 #define PG_TIMER_GAME_ENGINE_MAIN_GAME_H
 
 /*!
- * \brief       Structre for containing game parameters.
+ * \brief       Structure for containing game parameters.
  */
 struct tge_parameters {
     void (*setup_function)(void);   /*!<  Setup/initialization function */
