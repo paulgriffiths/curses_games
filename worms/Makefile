@@ -26,7 +26,6 @@ LDFLAGS=-L$(HOME)/lib/c -lpg_curses_tge -lcurses
 
 # Object code files
 OBJS=main.o
-OBJS+=tge_curses_routines.o tge_main_game.o tge_game_state.o tge_signals.o
 OBJS+=worms_game.o worms_screen.o worms_time.o worms_worm.o worms_food.o
 
 # Source and clean files and globs
@@ -94,22 +93,6 @@ main: $(OBJS)
 # ============================
 
 main.o: main.c
-	@echo "Compiling $<..."
-	@$(CC) $(CFLAGS) -c -o $@ $<
-
-tge_curses_routines.o: tge_curses_routines.c
-	@echo "Compiling $<..."
-	@$(CC) $(CFLAGS) -c -o $@ $<
-
-tge_main_game.o: tge_main_game.c
-	@echo "Compiling $<..."
-	@$(CC) $(CFLAGS) -c -o $@ $<
-
-tge_signals.o: tge_signals.c
-	@echo "Compiling $<..."
-	@$(CC) $(CFLAGS) -c -o $@ $<
-
-tge_game_state.o: tge_game_state.c
 	@echo "Compiling $<..."
 	@$(CC) $(CFLAGS) -c -o $@ $<
 
