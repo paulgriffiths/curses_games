@@ -51,8 +51,8 @@ static void worms_draw_info_window(void);
 
 void worms_game_area_init(void) {
     WINDOW * main_window = tge_main_window();
-    const int cols = tge_term_width();
-    const int rows = tge_term_height();
+    const int cols = tge_term_cols();
+    const int rows = tge_term_rows();
 
     arena_window.window = subwin(main_window,
                                  rows,

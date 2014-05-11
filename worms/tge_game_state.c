@@ -1,15 +1,31 @@
+/*!
+ * \file            tge_game_state.c
+ * \brief           Implementation of TGE game state functions.
+ * \details         Implementation of TGE game state functions.
+ * \author          Paul Griffiths
+ * \copyright       Copyright 2014 Paul Griffiths. Distributed under the terms
+ * of the GNU General Public License. <http://www.gnu.org/licenses/>
+ */
+
 #include "tge.h"
 
+/*!
+ * \brief   Enumeration constants for game state.
+ */
 enum game_state {
-    TGE_GAME_STATE_NOTSTARTED,
-    TGE_GAME_STATE_RUNNING,
-    TGE_GAME_STATE_ENDED
+    TGE_GAME_STATE_NOTSTARTED,  /*!<  Game has not started      */
+    TGE_GAME_STATE_RUNNING,     /*!<  Game has started          */
+    TGE_GAME_STATE_ENDED        /*!<  Game has ended            */
 };
 
+/*!  File scope variable for current exit status  */
 static int tge_end_status_var = 0;
 
+/*!  File scope variable for current game state  */
 static enum game_state game_state = TGE_GAME_STATE_NOTSTARTED;
-static bool refresh_flag = 1;
+
+/*!  File scope variable for "needs updating" flag  */
+static bool refresh_flag = true;
 
 void tge_start_game(void) {
     game_state = TGE_GAME_STATE_RUNNING;
@@ -39,3 +55,4 @@ void tge_set_needs_refresh(const bool status) {
 bool tge_needs_refresh(void) {
     return refresh_flag;
 }
+

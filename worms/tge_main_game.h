@@ -10,15 +10,31 @@
 #ifndef PG_TIMER_GAME_ENGINE_MAIN_GAME_H
 #define PG_TIMER_GAME_ENGINE_MAIN_GAME_H
 
+/*!
+ * \brief       Structre for containing game parameters.
+ */
 struct tge_parameters {
-    void (*setup_function)(void);
-    void (*draw_function)(void);
-    void (*input_function)(int);
-    void (*teardown_function)(int);
-    double timer_interval;
+    void (*setup_function)(void);   /*!<  Setup/initialization function */
+    void (*draw_function)(void);    /*!<  Draw function                 */
+    void (*input_function)(int);    /*!<  Input handling function       */
+    void (*teardown_function)(int); /*!<  Cleanup function              */
+    double timer_interval;          /*!<  Timer interval, in seconds    */
 };
 
-int tge_begin_game(struct tge_parameters * parameters);
+/*!
+ * \brief               Begins the timer game.
+ * \details             Begins the timer game.
+ * \param parameters    A pointer to a `struct tge_parameters` object
+ * containing the desired game parameters.
+ * \returns             The exit status of the game.
+ */
+int tge_begin_game(const struct tge_parameters * parameters);
+
+/*!
+ * \brief           Ends the timer game.
+ * \details         Ends the timer game.
+ * \param status    The exit status for the game.
+ */
 void tge_end_game(const int status);
 
 #endif      /*  PG_TIMER_GAME_ENGINE_MAIN_GAME_H  */
