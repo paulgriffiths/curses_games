@@ -35,7 +35,7 @@ C_DEBUG_FLAGS=-ggdb -DDEBUG -DDEBUG_ALL
 C_RELEASE_FLAGS=-O3 -DNDEBUG
 
 # Linker flags
-LDFLAGS=-lcurses
+LDFLAGS=-L$(HOME)/lib/c -lcurses
 
 # Object code files
 OBJS=tge_main_game.o tge_signals.o tge_game_state.o tge_curses_routines.o
