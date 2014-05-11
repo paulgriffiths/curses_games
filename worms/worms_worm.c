@@ -33,7 +33,7 @@ struct worm {
 static struct worm worm = {NULL, NULL, WORM_DIR_RIGHT, WORM_DIR_RIGHT};
 
 /*!  File scope constant containing initial length of worm  */
-static const int WORM_START_LENGTH = 8;
+static const size_t WORM_START_LENGTH = 8;
 
 /*!
  * \brief       Erases the worm from the arena.
