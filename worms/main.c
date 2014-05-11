@@ -1,9 +1,28 @@
+/*!
+ * \file            main.c
+ * \brief           main() function for worms game.
+ * \details         main() function for worms game.
+ * \author          Paul Griffiths
+ * \copyright       Copyright 2014 Paul Griffiths. Distributed under the terms
+ * of the GNU General Public License. <http://www.gnu.org/licenses/>
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "worms.h"
 
+/*!
+ * \brief               Prints a quit message.
+ * \details             Prints a quit message.
+ * \param end_status    The exit status of the game.
+ */
 void print_quit_message(const int end_status);
 
+/*!
+ * \brief   main() function.
+ * \details main() function.
+ * \returns The exit status of the program.
+ */
 int main(void) {
     struct tge_parameters parameters;
     parameters.setup_function = worms_game_setup;

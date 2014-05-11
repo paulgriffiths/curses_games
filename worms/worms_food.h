@@ -1,5 +1,5 @@
 /*!
- * \file            worms_food.c
+ * \file            worms_food.h
  * \brief           Interface to worm food functions.
  * \details         Interface to worm food functions for curses worms game.
  * \author          Paul Griffiths

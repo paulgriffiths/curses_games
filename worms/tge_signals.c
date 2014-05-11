@@ -7,6 +7,7 @@
  * of the GNU General Public License. <http://www.gnu.org/licenses/>
  */
 
+/*!  POSIX feature test macro  */
 #define _POSIX_C_SOURCE 200809L
 
 #include <stdio.h>
