@@ -4,8 +4,8 @@ timer_game_engine
 What is it?
 -----------
 
-**timer_game_engine** is a curses-based framework for writing games which:
-- the game and display regularly updates at a specified time interval; and
+**timer_game_engine** is a curses-based framework for writing games where:
+- the game and display regularly update at a specified time interval; and
 - the game can receive keyboard input at any time.
 
 The rationale for providing this framework is twofold. Firstly, to
@@ -62,10 +62,13 @@ the user's home directory in a directory called `lib/c`, and the associated
 headers are installed in the user's home directory in a directory called
 `include/paulgrif`. Both directories are created if they do not already exist.
 To use the library, `#include <paulgrif/tge.h>` in your program and link
-with `-lpg_curses_tge`.
+with `-lpg_curses_tge`. You may need to modify the makefile or your
+`C_INCLUDE_PATH` enviroment variable to include the header directory in your
+include search path, or to include the provide the folder to the C compiler
+with the `-I` option.
 
-A short sample program is included. Type `make sample` to build this program,
-and then `./sample` to run it.
+A short sample program using the library is included. Type `make sample` to
+build this program, and then `./sample` to run it.
 
 Licensing
 ---------
