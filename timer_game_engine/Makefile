@@ -11,7 +11,7 @@
 # =================
 
 # Library and executable names
-LIBNAME=timer_game_engine
+LIBNAME=pg_curses_tge
 OUT=lib$(LIBNAME).a
 SAMPLEOUT=sample
 
@@ -19,25 +19,26 @@ SAMPLEOUT=sample
 INC_INSTALL_PREFIX=paulgrif
 INC_INSTALL_PATH=$(HOME)/include/$(INC_INSTALL_PREFIX)
 LIB_INSTALL_PATH=$(HOME)/lib/c
-INSTALLHEADERS=
+INSTALLHEADERS=tge.h tge_main_game.h tge_game_state.h tge_signals.h
+INSTALLHEADERS+=tge_curses_routines.h
 
 # Compiler and archiver executable names
 AR=ar
-CC=gcc
+CC=cc
 
 # Archiver flags
 ARFLAGS=rcs
 
 # Compiler flags
-CFLAGS=-std=c11 -pedantic -Wall -Wextra
+CFLAGS=-std=c99 -pedantic -Wall -Wextra
 C_DEBUG_FLAGS=-ggdb -DDEBUG -DDEBUG_ALL
 C_RELEASE_FLAGS=-O3 -DNDEBUG
 
 # Linker flags
-LDFLAGS=
+LDFLAGS=-lcurses
 
 # Object code files
-OBJS=mainlib.o
+OBJS=tge_main_game.o tge_signals.o tge_game_state.o tge_curses_routines.o
 
 # Source and clean files and globs
 SRCS=$(wildcard *.c *.h)
@@ -143,6 +144,19 @@ main.o: main.c
 
 # Object files for library
 
-mainlib.o: mainlib.c mainlib.h
+tge_main_game.o: tge_main_game.c
 	@echo "Compiling $<..."
 	@$(CC) $(CFLAGS) -c -o $@ $<
+
+tge_signals.o: tge_signals.c
+	@echo "Compiling $<..."
+	@$(CC) $(CFLAGS) -c -o $@ $<
+
+tge_game_state.o: tge_game_state.c
+	@echo "Compiling $<..."
+	@$(CC) $(CFLAGS) -c -o $@ $<
+
+tge_curses_routines.o: tge_curses_routines.c
+	@echo "Compiling $<..."
+	@$(CC) $(CFLAGS) -c -o $@ $<
+
