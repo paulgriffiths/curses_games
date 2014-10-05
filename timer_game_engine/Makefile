@@ -92,7 +92,7 @@ sample: main.o
 # clean - removes ancilliary files from working directory
 .PHONY: clean
 clean:
-	-@rm $(CLNGLOB) 2>/dev/null
+	-@rm -f $(CLNGLOB) 2>/dev/null
 
 # docs - makes Doxygen documentation:
 .PHONY: docs
