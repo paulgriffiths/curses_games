@@ -52,15 +52,15 @@ void tge_set_signal_handlers(void) {
     /*  Set signal handlers for SIGTERM, SIGINT and SIGLARM  */
 
     if ( sigaction(SIGTERM, &sa, NULL) == -1 ) {
-        perror("worms: couldn't set SIGTERM handler");
+        perror("tge: couldn't set SIGTERM handler");
         exit(EXIT_FAILURE);
     }
     if ( sigaction(SIGINT, &sa, NULL) == -1 ) {
-        perror("worms: couldn't set SIGINT handler");
+        perror("tge: couldn't set SIGINT handler");
         exit(EXIT_FAILURE);
     }
     if ( sigaction(SIGALRM, &sa, NULL) == -1 ) {
-        perror("worms: couldn't set SIGALRM handler");
+        perror("tge: couldn't set SIGALRM handler");
         exit(EXIT_FAILURE);
     }
 
@@ -68,7 +68,7 @@ void tge_set_signal_handlers(void) {
 
     sa.sa_handler = SIG_IGN;
     if ( sigaction(SIGTSTP, &sa, NULL) == -1 ) {
-        perror("worms: couldn't ignore SIGTSTP");
+        perror("tge: couldn't ignore SIGTSTP");
         exit(EXIT_FAILURE);
     }
 }
@@ -81,7 +81,7 @@ void tge_timer_start(const double start, const double interval) {
     itv.it_value.tv_usec = tge_get_fractional_microseconds(start);
 
     if ( setitimer(ITIMER_REAL, &itv, NULL) != 0 ) {
-        perror("worms: couldn't set itimer");
+        perror("tge: couldn't set itimer");
         exit(EXIT_FAILURE);
     }
 }
@@ -94,7 +94,7 @@ void tge_timer_stop(void) {
     itv.it_value.tv_usec = 0;
 
     if ( setitimer(ITIMER_REAL, &itv, NULL) == -1 ) {
-        perror("worms: couldn't set itimer");
+        perror("tge: couldn't set itimer");
         exit(EXIT_FAILURE);
     }
 }
