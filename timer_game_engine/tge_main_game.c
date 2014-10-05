@@ -86,7 +86,7 @@ static void tge_game_loop(void) {
         exit(EXIT_FAILURE);
     }
 
-    if ( !sigdelset(&unblocked, SIGALRM) == -1 ) {
+    if ( sigdelset(&unblocked, SIGALRM) == -1 ) {
         perror("tge: error calling sigdelset()");
         exit(EXIT_FAILURE);
     }
