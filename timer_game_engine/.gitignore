@@ -1,6 +1,12 @@
 # Executables
 sample
-unittests
+
+# Library and binary directories
+
+lib/*
+!lib/README.md
+bin/*
+!bin/README.md
 
 # Doxygen folders
 html
@@ -28,3 +34,6 @@ tags
 
 # Backup files
 *~
+
+# Dependency files
+*.d

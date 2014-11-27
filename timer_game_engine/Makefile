@@ -15,25 +15,30 @@ INCLDIR     := $(MKFLDIR)include
 SOURCES     := $(wildcard src/*.c)
 OBJECTS	     = $(subst .c,.o,$(SOURCES))
 DEPENDS	     = $(subst .c,.d,$(SOURCES))
-LIBRARY     := lib/libpg_curses_tge.a
-SAMPLES     :=
-TESTS		:=
+LIBRARY     := $(LIBDIR)/libpg_curses_tge.a
+SAMPLE		:= $(BINDIR)/sample
 
 AR			:= ar
 ARFLAGS		:= rcs
 CC          := gcc
 CFLAGS      := -std=c99 -pedantic -Wall -Wextra -ggdb -DDEBUG -DDEBUG_ALL
 CPPFLAGS	:= -I$(INCLDIR)
+LDFLAGS		:= -L$(LIBDIR) -lpg_curses_tge -lcurses
 RM          := rm -f
 SED         := sed
 CTAGS       := ctags
 
 CLNGLOB      = $(LIBRARY) $(OBJECTS) $(DEPENDS) tags
 
-default: $(LIBRARY) 
+default: all
+	
+all: $(LIBRARY) $(SAMPLE)
 
 $(LIBRARY): $(OBJECTS)
 	$(AR) $(ARFLAGS) $@ $^
+
+$(SAMPLE): samplesrc/main.c
+	$(CC) -o $@ $^ $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
 
 # clean - removes ancilliary files from working directory
 
