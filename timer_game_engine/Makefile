@@ -30,10 +30,10 @@ CTAGS       := ctags
 
 CLNGLOB      = $(LIBRARY) $(OBJECTS) $(DEPENDS) tags
 
-default: library
+default: $(LIBRARY) 
 
-library: $(OBJECTS)
-	$(AR) $(ARFLAGS) $(LIBRARY) $(OBJECTS)
+$(LIBRARY): $(OBJECTS)
+	$(AR) $(ARFLAGS) $@ $^
 
 # clean - removes ancilliary files from working directory
 
