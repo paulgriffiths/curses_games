@@ -25,19 +25,19 @@ and a second thread updates the screen.
 A second naive implementation would be to simply poll for input without
 blocking, which would be an unnecessary waste of processor time.
 
-The solution here is to wait for input with `select()` to avoid
+The solution here is to wait for input with `pselect()` to avoid
 blocking on any input. The game timer is implemented with `SIGALRM`, and
 the signal handler simply sets an "updated needed" variable and has
-the automatic side-effect of interrupting `select()` (note: portable
+the automatic side-effect of interrupting `pselect()` (note: portable
 curses programs cannot make any assumptions about whether handled signals
-will interrupt any curses input functions, so `select()` is necessary).
+will interrupt any curses input functions, so `pselect()` is necessary).
 
 The library implements a game loop which begins by checking if a screen
 update is necessary. If it is, the screen is updated, and the loop
-re-entered. If it is not, the loop waits on `select()`. If no input is
-entered, `select()` will interrupt on handling `SIGALRM` and continue to the
+re-entered. If it is not, the loop waits on `pselect()`. If no input is
+entered, `pselect()` will interrupt on handling `SIGALRM` and continue to the
 next iteration of the loop, and the screen will be updated again. If
-input is entered, `select()` will return and the input can be obtained
+input is entered, `pselect()` will return and the input can be obtained
 without blocking. 
 
 Who maintains it?
@@ -56,19 +56,10 @@ Up-to-date documentation can be found at
 
 Installation
 ------------
-**timer_game_engine** is written in C. Type `make` to build the library,
-and `make install` to install it. By default, the library is installed in
-the user's home directory in a directory called `lib/c`, and the associated
-headers are installed in the user's home directory in a directory called
-`include/paulgrif`. Both directories are created if they do not already exist.
-To use the library, `#include <paulgrif/tge.h>` in your program and link
-with `-lpg_curses_tge`. You may need to modify the makefile or your
-`C_INCLUDE_PATH` enviroment variable to include the header directory in your
-include search path, or to include the provide the folder to the C compiler
-with the `-I` option.
+**timer_game_engine** is written in C. Type `make` to build the library.
 
 A short sample program using the library is included. Type `make sample` to
-build this program, and then `./sample` to run it.
+build this program, and then `bin/sample` to run it.
 
 Licensing
 ---------
