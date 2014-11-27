@@ -1,98 +1,51 @@
-# timer_game_engine makefile
-# ==========================
+# Curses Timer Game Engine Makefile
+# =================================
 # Copyright 2014 Paul Griffiths
 # Email: mail@paulgriffiths.net
 #
 # Distributed under the terms of the GNU General Public License.
 # http://www.gnu.org/licenses/
 
+MKFLPATH    := $(realpath $(lastword $(MAKEFILE_LIST)))
+MKFLDIR     := $(dir $(MKFLPATH))
+LIBDIR      := $(MKFLDIR)lib
+BINDIR      := $(MKFLDIR)bin
+INCLDIR     := $(MKFLDIR)include
 
-# Variables section
-# =================
+SOURCES     := $(wildcard src/*.c)
+OBJECTS	     = $(subst .c,.o,$(SOURCES))
+DEPENDS	     = $(subst .c,.d,$(SOURCES))
+LIBRARY     := lib/libpg_curses_tge.a
+SAMPLES     :=
+TESTS		:=
 
-# Library and executable names
-LIBNAME=pg_curses_tge
-OUT=lib$(LIBNAME).a
-SAMPLEOUT=sample
+AR			:= ar
+ARFLAGS		:= rcs
+CC          := gcc
+CFLAGS      := -std=c99 -pedantic -Wall -Wextra -ggdb -DDEBUG -DDEBUG_ALL
+CPPFLAGS	:= -I$(INCLDIR)
+RM          := rm -f
+SED         := sed
+CTAGS       := ctags
 
-# Install paths and header files to deploy
-INC_INSTALL_PREFIX=paulgrif
-INC_INSTALL_PATH=$(HOME)/include/$(INC_INSTALL_PREFIX)
-LIB_INSTALL_PATH=$(HOME)/lib/c
-INSTALLHEADERS=tge.h tge_main_game.h tge_game_state.h tge_signals.h
-INSTALLHEADERS+=tge_curses_routines.h
+CLNGLOB      = $(LIBRARY) $(OBJECTS) $(DEPENDS) tags
 
-# Compiler and archiver executable names
-AR=ar
-CC=cc
+default: library
 
-# Archiver flags
-ARFLAGS=rcs
-
-# Compiler flags
-CFLAGS=-std=c99 -pedantic -Wall -Wextra
-C_DEBUG_FLAGS=-ggdb -DDEBUG -DDEBUG_ALL
-C_RELEASE_FLAGS=-O3 -DNDEBUG
-
-# Linker flags
-LDFLAGS=-L$(HOME)/lib/c -lcurses
-
-# Object code files
-OBJS=tge_main_game.o tge_signals.o tge_game_state.o tge_curses_routines.o
-
-# Source and clean files and globs
-SRCS=$(wildcard *.c *.h)
-
-SRCGLOB=*.c
-
-CLNGLOB=$(OUT) $(SAMPLEOUT)
-CLNGLOB+=*~ *.o *.gcov *.out *.gcda *.gcno
-
-
-# Build targets section
-# =====================
-
-default: debug
-
-# debug - builds objects with debugging info
-.PHONY: debug
-debug: CFLAGS+=$(C_DEBUG_FLAGS)
-debug: main
-
-# release - builds with optimizations and without debugging info
-.PHONY: release
-release: CFLAGS+=$(C_RELEASE_FLAGS)
-release: main
-
-# tests - builds unit tests
-.PHONY: tests
-tests: CFLAGS+=$(C_TEST_FLAGS)
-tests: LDFLAGS+=$(LD_TEST_FLAGS)
-tests: testmain
-
-# install - installs library and headers
-.PHONY: install
-install:
-	@if [ ! -d $(INC_INSTALL_PATH) ]; then \
-		mkdir $(INC_INSTALL_PATH); fi
-	@echo "Copying library to $(LIB_INSTALL_PATH)..."
-	@cp $(OUT) $(LIB_INSTALL_PATH)
-	@echo "Copying headers to $(INC_INSTALL_PATH)..."
-	@cp $(INSTALLHEADERS) $(INC_INSTALL_PATH)
-	@echo "Done."
-
-# sample - makes sample program
-.PHONY: sample
-sample: LDFLAGS+=-l$(LIBNAME)
-sample: main.o
-	@echo "Linking sample program..."
-	@$(CC) -o $(SAMPLEOUT) main.o $(LDFLAGS)
-	@echo "Done."
+library: $(OBJECTS)
+	$(AR) $(ARFLAGS) $(LIBRARY) $(OBJECTS)
 
 # clean - removes ancilliary files from working directory
+
 .PHONY: clean
 clean:
-	-@rm -f $(CLNGLOB) 2>/dev/null
+	-@$(RM) $(CLNGLOB) 2>/dev/null
+
+# tags - makes tags file
+
+.PHONY: tags
+tags:
+	@$(CTAGS) $(SOURCES)
 
 # docs - makes Doxygen documentation:
 .PHONY: docs
@@ -105,58 +58,11 @@ docs:
 	@cp latex/refman.pdf docs 
 	@echo "Done."
 
-# lint - runs splint with specified options
-.PHONY: lint
-lint:
-	@splint +unix-lib -unrecog $(SRCGLOB)
+# Dependencies
 
-# linteasy - runs splint with weak checking
-.PHONY: linteasy
-linteasy:
-	@splint -weak +unix-lib -unrecog $(SRCGLOB)
+-include $(DEPENDS)
 
-# tags - makes tags file
-.PHONY: tags
-tags:
-	@ctags *.c *.g
-
-
-
-# Executable targets section
-# ==========================
-
-# Main library
-main: $(OBJS)
-	@echo "Building library..."
-	@$(AR) $(ARFLAGS) $(OUT) $(OBJS)
-	@echo "Done."
-
-
-# Object files targets section
-# ============================
-
-# Sample program
-
-main.o: main.c
-	@echo "Compiling $<..."
-	@$(CC) $(CFLAGS) -c -o $@ $<
-
-
-# Object files for library
-
-tge_main_game.o: tge_main_game.c
-	@echo "Compiling $<..."
-	@$(CC) $(CFLAGS) -c -o $@ $<
-
-tge_signals.o: tge_signals.c
-	@echo "Compiling $<..."
-	@$(CC) $(CFLAGS) -c -o $@ $<
-
-tge_game_state.o: tge_game_state.c
-	@echo "Compiling $<..."
-	@$(CC) $(CFLAGS) -c -o $@ $<
-
-tge_curses_routines.o: tge_curses_routines.c
-	@echo "Compiling $<..."
-	@$(CC) $(CFLAGS) -c -o $@ $<
-
+%.d: %.c
+	@$(CC) -M $(CFLAGS) $(CPPFLAGS) $< > $@.tmp; \
+		$(SED) 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.tmp > $@; \
+		$(RM) $@.tmp

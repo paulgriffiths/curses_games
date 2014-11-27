@@ -19,8 +19,8 @@ OUT			:= $(BINDIR)/worms
 CC          := gcc
 LD			:= gcc
 CFLAGS      := -std=c99 -pedantic -Wall -Wextra -ggdb -DDEBUG -DDEBUG_ALL
-CPPFLAGS	:= -I$(INCLDIR)
-LDFLAGS		:= -L../timer_game_engine -lpg_curses_tge -lcurses
+CPPFLAGS	:= -I$(INCLDIR) -I$(MKFLDIR)../timer_game_engine/include
+LDFLAGS		:= -L../timer_game_engine/lib -lpg_curses_tge -lcurses
 RM          := rm -f
 SED         := sed
 CTAGS       := ctags

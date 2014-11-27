@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <curses.h>
-#include <paulgrif/tge.h>
+#include "tge.h"
 
 
 /*!  File scope constant for normal exit status  */
