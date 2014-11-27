@@ -7,6 +7,10 @@
  * of the GNU General Public License. <http://www.gnu.org/licenses/>
  */
 
+/*!  POSIX feature test macro  */
+#define _POSIX_C_SOURCE 200809L
+
+#include <signal.h>
 #include "tge.h"
 
 /*!
@@ -19,13 +23,13 @@ enum game_state {
 };
 
 /*!  File scope variable for current exit status  */
-static int tge_end_status_var = 0;
+static volatile sig_atomic_t tge_end_status_var = 0;
 
 /*!  File scope variable for current game state  */
-static enum game_state game_state = TGE_GAME_STATE_NOTSTARTED;
+static volatile sig_atomic_t game_state = TGE_GAME_STATE_NOTSTARTED;
 
 /*!  File scope variable for "needs updating" flag  */
-static bool refresh_flag = true;
+static volatile sig_atomic_t refresh_flag = true;
 
 void tge_start_game(void) {
     game_state = TGE_GAME_STATE_RUNNING;

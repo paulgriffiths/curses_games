@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <time.h>
+#include <signal.h>
 #include <unistd.h>
 #include <sys/select.h>
 #include "tge.h"
@@ -58,6 +59,45 @@ int tge_begin_game(const struct tge_parameters * parameters) {
 }
 
 static void tge_game_loop(void) {
+    sigset_t unblocked, blocked, oldmask;
+
+    /*  Store current mask in both blocked and unblocked,
+     *  and block SIGALRM in blocked, but unblock SIGALRM
+     *  in unblocked. These masks are used in the pselect()
+     *  call below, see comment in main game loop.           */
+
+    if ( sigprocmask(SIG_BLOCK, NULL, &oldmask) == -1 ) {
+        perror("tge: error calling sigprocmask()");
+        exit(EXIT_FAILURE);
+    }
+
+    if ( sigprocmask(SIG_BLOCK, NULL, &unblocked) == -1 ) {
+        perror("tge: error calling sigprocmask()");
+        exit(EXIT_FAILURE);
+    }
+
+    if ( sigprocmask(SIG_BLOCK, NULL, &blocked) == -1 ) {
+        perror("tge: error calling sigprocmask()");
+        exit(EXIT_FAILURE);
+    }
+
+    if ( sigaddset(&blocked, SIGALRM) == -1 ) {
+        perror("tge: error calling sigaddset()");
+        exit(EXIT_FAILURE);
+    }
+
+    if ( sigdelset(&unblocked, SIGALRM) == -1 ) {
+        perror("tge: error calling sigdelset()");
+        exit(EXIT_FAILURE);
+    }
+
+    /*  Block SIGALRM prior to entering main loop  */
+
+    if ( sigprocmask(SIG_BLOCK, &blocked, NULL) == -1 ) {
+        perror("tge: error calling sigprocmask()");
+        exit(EXIT_FAILURE);
+    }
+
     while ( !tge_game_ended() ) {
         if ( tge_needs_refresh() ) {
             tge_set_needs_refresh(false);
@@ -72,16 +112,19 @@ static void tge_game_loop(void) {
          * select() will block until the next SIGLARM. Two updates in
          * a row cannot be skipped in this manner, since we check
          * tge_needs_refresh() at the start of every iteration of the
-         * loop. This is not the end of the world, but could lead to
-         * the (very) occasional unexpected stutter in the game. There
-         * appears to be no good way to prevent this, other than to
-         * minimize the amount of time between the two calls.
+         * loop.
+         * 
+         * To avoid this, we block SIGALRM prior to entering the loop,
+         * and call pselect() instead of select(), to atomically
+         * unblock SIGALRM. Any pending signal will be delivered
+         * immediately, and pselect() will return. 
          */
 
         fd_set fs;
         FD_ZERO(&fs);
         FD_SET(STDIN_FILENO, &fs);
-        int status = select(STDIN_FILENO + 1, &fs, NULL, NULL, NULL);
+        int status = pselect(STDIN_FILENO + 1, &fs,
+                             NULL, NULL, NULL, &unblocked);
         if ( status == -1 ) {
             if ( errno == EINTR ) {
 
@@ -104,6 +147,13 @@ static void tge_game_loop(void) {
             int c = tge_get_character();
             game_param.input_function(c);
         }
+    }
+
+    /*  Restore original signal mask  */
+
+    if ( sigprocmask(SIG_BLOCK, &oldmask, NULL) == -1 ) {
+        perror("tge: error calling sigprocmask()");
+        exit(EXIT_FAILURE);
     }
 }
 
