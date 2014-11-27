@@ -1,4 +1,4 @@
-# Worms makefile
+# Worms Makefile
 # ==============
 # Copyright 2014 Paul Griffiths
 # Email: mail@paulgriffiths.net
@@ -6,56 +6,45 @@
 # Distributed under the terms of the GNU General Public License.
 # http://www.gnu.org/licenses/
 
+MKFLPATH    := $(realpath $(lastword $(MAKEFILE_LIST)))
+MKFLDIR     := $(dir $(MKFLPATH))
+BINDIR      := $(MKFLDIR)bin
+INCLDIR     := $(MKFLDIR)include
 
-# Variables section
-# =================
+SOURCES     := $(wildcard src/*.c)
+OBJECTS	     = $(subst .c,.o,$(SOURCES))
+DEPENDS	     = $(subst .c,.d,$(SOURCES))
 
-# Library and executable names
-OUT=worms
+OUT			:= $(BINDIR)/worms
+CC          := gcc
+LD			:= gcc
+CFLAGS      := -std=c99 -pedantic -Wall -Wextra -ggdb -DDEBUG -DDEBUG_ALL
+CPPFLAGS	:= -I$(INCLDIR)
+LDFLAGS		:= -lcurses -L../timer_game_engine -lpg_curses_tge
+RM          := rm -f
+SED         := sed
+CTAGS       := ctags
 
-# Compiler and archiver executable names
-CC=cc
+CLNGLOB      = $(OUT) $(OBJECTS) $(DEPENDS) tags
 
-# Compiler flags
-CFLAGS=-std=c99 -pedantic -Wall -Wextra
-C_DEBUG_FLAGS=-ggdb -DDEBUG -DDEBUG_ALL
-C_RELEASE_FLAGS=-O3 -DNDEBUG
+default: $(OUT)
 
-# Linker flags
-LDFLAGS=-L$(HOME)/lib/c -lpg_curses_tge -lcurses
+$(OUT): $(OBJECTS)
+	$(LD) -o $@ $? $(LDFLAGS)
 
-# Object code files
-OBJS=main.o
-OBJS+=worms_game.o worms_screen.o worms_time.o worms_worm.o worms_food.o
-
-# Source and clean files and globs
-SRCS=$(wildcard *.c *.h)
-
-SRCGLOB=*.c
-
-CLNGLOB=$(OUT) $(SAMPLEOUT)
-CLNGLOB+=*~ *.o *.gcov *.out *.gcda *.gcno
-
-
-# Build targets section
-# =====================
-
-default: debug
-
-# debug - builds objects with debugging info
-.PHONY: debug
-debug: CFLAGS+=$(C_DEBUG_FLAGS)
-debug: main
-
-# release - builds with optimizations and without debugging info
-.PHONY: release
-release: CFLAGS+=$(C_RELEASE_FLAGS)
-release: main
+main: $(OBJECTS)
 
 # clean - removes ancilliary files from working directory
+
 .PHONY: clean
 clean:
-	-@rm $(CLNGLOB) 2>/dev/null
+	-@$(RM) $(CLNGLOB) 2>/dev/null
+
+# tags - makes tags file
+
+.PHONY: tags
+tags:
+	@$(CTAGS) $(SOURCES)
 
 # docs - makes Doxygen documentation:
 .PHONY: docs
@@ -68,51 +57,11 @@ docs:
 	@cp latex/refman.pdf docs 
 	@echo "Done."
 
-# lint - runs splint with specified options
-.PHONY: lint
-lint:
-	@splint +unix-lib -unrecog $(SRCGLOB)
+# Dependencies
 
-# linteasy - runs splint with weak checking
-.PHONY: linteasy
-linteasy:
-	@splint -weak +unix-lib -unrecog -retvalother -f ./.splintrc $(SRCGLOB)
+-include $(DEPENDS)
 
-
-# Executable targets section
-# ==========================
-
-# Main library
-main: $(OBJS)
-	@echo "Linking worms..."
-	@$(CC) -o $(OUT) $(OBJS) $(LDFLAGS)
-	@echo "Done."
-
-
-# Object files targets section
-# ============================
-
-main.o: main.c
-	@echo "Compiling $<..."
-	@$(CC) $(CFLAGS) -c -o $@ $<
-
-worms_game.o: worms_game.c
-	@echo "Compiling $<..."
-	@$(CC) $(CFLAGS) -c -o $@ $<
-
-worms_food.o: worms_food.c
-	@echo "Compiling $<..."
-	@$(CC) $(CFLAGS) -c -o $@ $<
-
-worms_screen.o: worms_screen.c
-	@echo "Compiling $<..."
-	@$(CC) $(CFLAGS) -c -o $@ $<
-
-worms_time.o: worms_time.c
-	@echo "Compiling $<..."
-	@$(CC) $(CFLAGS) -c -o $@ $<
-
-worms_worm.o: worms_worm.c
-	@echo "Compiling $<..."
-	@$(CC) $(CFLAGS) -c -o $@ $<
-
+%.d: %.c
+	@$(CC) -M $(CFLAGS) $(CPPFLAGS) $< > $@.tmp; \
+		$(SED) 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.tmp > $@; \
+		$(RM) $@.tmp
