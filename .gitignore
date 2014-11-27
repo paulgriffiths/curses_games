@@ -27,3 +27,6 @@ run_profile
 
 # Backup files
 *~
+
+# Dependency files
+*.d
