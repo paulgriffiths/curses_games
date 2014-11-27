@@ -1,7 +1,6 @@
 /*!
  * \file            main.c
  * \brief           main() function for worms game.
- * \details         main() function for worms game.
  * \author          Paul Griffiths
  * \copyright       Copyright 2014 Paul Griffiths. Distributed under the terms
  * of the GNU General Public License. <http://www.gnu.org/licenses/>
@@ -16,14 +15,15 @@
  * \details             Prints a quit message.
  * \param end_status    The exit status of the game.
  */
-void print_quit_message(const int end_status);
+static void print_quit_message(const int end_status);
 
 /*!
  * \brief   main() function.
  * \details main() function.
  * \returns The exit status of the program.
  */
-int main(void) {
+int main(void)
+{
     struct tge_parameters parameters;
     parameters.setup_function = worms_game_setup;
     parameters.teardown_function = worms_game_teardown;
@@ -31,13 +31,14 @@ int main(void) {
     parameters.input_function = worms_process_input;
     parameters.timer_interval = .2;
 
-    int end_status = tge_begin_game(&parameters);
+    const int end_status = tge_begin_game(&parameters);
     print_quit_message(end_status);
 
     return EXIT_SUCCESS;
 }
 
-void print_quit_message(const int end_status) {
+static void print_quit_message(const int end_status)
+{
     switch ( end_status ) {
         case WORMS_EXIT_NORMAL:
             printf("Game over! You quit the game.\n");
@@ -57,7 +58,7 @@ void print_quit_message(const int end_status) {
     }
 
     printf("You played for %s.\n", worms_game_time_string(true));
-    int score = worms_get_food_eaten();
+    const int score = worms_get_food_eaten();
     printf("You ate %d %s of food.\n", score,
            (score == 1) ? "piece" : "pieces");
 }

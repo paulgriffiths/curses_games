@@ -1,10 +1,9 @@
 /*!
  * \file            worms_screen.c
  * \brief           Implementation of worms game screen functions.
- * \details         Implementation of worms game screen functions. The game
- * screen consists of two parts: the "arena", where the worm moves, and
- * the "sidebar", containing the game title and game statistics. "Game area"
- * can also refer to the entire game screen.
+ * \details         The game screen consists of two parts: the "arena",
+ * where the worm moves, and the "sidebar", containing the game title
+ * and game statistics. "Game area" can also refer to the entire game screen.
  * \author          Paul Griffiths
  * \copyright       Copyright 2014 Paul Griffiths. Distributed under the terms
  * of the GNU General Public License. <http://www.gnu.org/licenses/>
@@ -49,7 +48,8 @@ static void worms_draw_title_window(void);
  */
 static void worms_draw_info_window(void);
 
-void worms_game_area_init(void) {
+void worms_game_area_init(void)
+{
     WINDOW * main_window = tge_main_window();
     const int cols = tge_term_cols();
     const int rows = tge_term_rows();
@@ -79,37 +79,44 @@ void worms_game_area_init(void) {
     info_window.rows = rows - title_rows;
 }
 
-void worms_game_area_destroy(void) {
+void worms_game_area_destroy(void)
+{
     delwin(info_window.window);
     delwin(title_window.window);
     delwin(arena_window.window);
 }
 
-void worms_draw_arena_border(void) {
+void worms_draw_arena_border(void)
+{
     box(arena_window.window, 0, 0);
 }
 
-void worms_draw_sidebar(void) {
+void worms_draw_sidebar(void)
+{
     worms_draw_title_window();
     worms_draw_info_window();
 }
 
-void worms_refresh_game_area(void) {
+void worms_refresh_game_area(void) 
+{
     wrefresh(arena_window.window);
     wrefresh(title_window.window);
     wrefresh(info_window.window);
 }
 
-int worms_game_arena_cols(void) {
+int worms_game_arena_cols(void)
+{
     return arena_window.cols;
 }
 
-int worms_game_arena_rows(void) {
+int worms_game_arena_rows(void)
+{
     return arena_window.rows;
 }
 
 void worms_write_arena_character(const enum worms_cell_character ch,
-                                 const int x, const int y) {
+                                 const int x, const int y)
+{
     chtype out_ch;
     switch ( ch ) {
         case WORM_BODY_CHARACTER:
@@ -129,11 +136,11 @@ void worms_write_arena_character(const enum worms_cell_character ch,
             break;
     }
 
-    wmove(arena_window.window, y, x);
-    waddch(arena_window.window, out_ch);
+    mvwaddch(arena_window.window, y, x, out_ch);
 }
 
-enum worms_cell_character worms_get_arena_character(const int x, const int y) {
+enum worms_cell_character worms_get_arena_character(const int x, const int y)
+{
     wmove(arena_window.window, y, x);
     const chtype cell_ch = winch(arena_window.window) & A_CHARTEXT;
 
@@ -159,7 +166,8 @@ enum worms_cell_character worms_get_arena_character(const int x, const int y) {
     return ret_ch;
 }
 
-bool worms_coords_in_game_arena(const int x, const int y) {
+bool worms_coords_in_game_arena(const int x, const int y)
+{
     if ( x > 0 && (x < arena_window.cols - 1) &&
          y > 0 && (y < arena_window.rows - 1) ) {
         return true;
@@ -169,23 +177,21 @@ bool worms_coords_in_game_arena(const int x, const int y) {
     }
 }
 
-static void worms_draw_title_window(void) {
+static void worms_draw_title_window(void)
+{
     box(title_window.window, 0, 0);
 
-    wmove(title_window.window, 1, 7);
-    waddstr(title_window.window, "WORMS!");
-    wmove(title_window.window, 3, 9);
-    waddstr(title_window.window, "by");
-    wmove(title_window.window, 5, 3);
-    waddstr(title_window.window, "Paul Griffiths");
+    mvwaddstr(title_window.window, 1, 7, "WORMS!");
+    mvwaddstr(title_window.window, 3, 9, "by");
+    mvwaddstr(title_window.window, 5, 3, "Paul Griffiths");
 }
 
-static void worms_draw_info_window(void) {
+static void worms_draw_info_window(void)
+{
     box(info_window.window, 0, 0);
 
-    wmove(info_window.window, 1, 4);
-    wprintw(info_window.window, "Score : %4d", worms_get_food_eaten());
-    wmove(info_window.window, 3, 3);
-    wprintw(info_window.window, "Time: %s", worms_game_time_string(false));
+    mvwprintw(info_window.window, 1, 3,
+              "Score : %4d", worms_get_food_eaten());
+    mvwprintw(info_window.window, 3, 3,
+              "Time: %s", worms_game_time_string(false));
 }
-

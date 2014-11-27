@@ -1,8 +1,8 @@
 /*!
  * \file            worms_worm.c
  * \brief           Implementation of worms game worm functions.
- * \details         Implementation of worms game worm functions. The worm
- * is implemented as a double-ended, doubly-linked list.
+ * \details         The worm is implemented as a double-ended,
+ * doubly-linked list.
  * \author          Paul Griffiths
  * \copyright       Copyright 2014 Paul Griffiths. Distributed under the terms
  * of the GNU General Public License. <http://www.gnu.org/licenses/>
@@ -92,32 +92,37 @@ static void worm_delete_cell_head(void);
  */
 static void worm_delete_cell_tail(void);
 
-void worm_init(void) {
+void worm_init(void)
+{
     for ( size_t x = 2; x <= WORM_START_LENGTH + 2; ++x ) {
         worm_add_cell_head(x, 10);
     }
 }
 
-void worm_destroy(void) {
+void worm_destroy(void)
+{
     while ( worm.head ) {
         worm_delete_cell_head();
     }
 }
 
-void worm_set_direction(enum worm_direction direction) {
+void worm_set_direction(enum worm_direction direction)
+{
     if ( abs(worm.last_direction - direction) != 2 ) {
         worm.next_direction = direction;
     }
 }
 
-bool worm_move_and_draw(void) {
+bool worm_move_and_draw(void)
+{
     worm_clear();
     const bool move = worm_move();
     worm_draw();
     return move;
 }
 
-static void worm_clear(void) {
+static void worm_clear(void)
+{
     const struct cell * cell = worm.tail;
     while ( cell ) {
         worms_write_arena_character(WORM_EMPTY_CHARACTER, cell->x, cell->y);
@@ -125,7 +130,8 @@ static void worm_clear(void) {
     }
 }
 
-static bool worm_move(void) {
+static bool worm_move(void)
+{
     int x, y;
     bool food_eaten = false;
 
@@ -209,7 +215,8 @@ static bool worm_move(void) {
     return food_eaten;
 }
 
-static void worm_draw(void) {
+static void worm_draw(void)
+{
     const struct cell * cell = worm.tail;
     while ( cell ) {
         worms_write_arena_character(WORM_BODY_CHARACTER, cell->x, cell->y);
@@ -217,7 +224,8 @@ static void worm_draw(void) {
     }
 }
 
-static bool worm_cell_here(const int x, const int y) {
+static bool worm_cell_here(const int x, const int y)
+{
     const struct cell * cell = worm.tail;
     while ( cell ) {
         if ( cell->x == x && cell->y == y ) {
@@ -228,7 +236,8 @@ static bool worm_cell_here(const int x, const int y) {
     return false;
 }
 
-static void worm_add_cell_head(const int x, const int y) {
+static void worm_add_cell_head(const int x, const int y)
+{
     struct cell * new_cell = malloc(sizeof *new_cell);
     if ( new_cell == NULL ) {
         perror("worms: error allocating memory for worm");
@@ -251,7 +260,8 @@ static void worm_add_cell_head(const int x, const int y) {
     }
 }
 
-static void worm_delete_cell_head(void) {
+static void worm_delete_cell_head(void)
+{
     if ( worm.head ) {
         struct cell * new_head = worm.head->back;
 
@@ -273,7 +283,8 @@ static void worm_delete_cell_head(void) {
     }
 }
 
-static void worm_delete_cell_tail(void) {
+static void worm_delete_cell_tail(void)
+{
     if ( worm.tail ) {
         struct cell * new_tail = worm.tail->front;
 
@@ -294,4 +305,3 @@ static void worm_delete_cell_tail(void) {
         worm.tail = new_tail;
     }
 }
-

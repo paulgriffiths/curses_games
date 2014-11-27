@@ -1,7 +1,6 @@
 /*!
  * \file            worms_time.c
  * \brief           Implementation of worms game duration timer functions.
- * \details         Implementation of worms game duration timer functions.
  * \author          Paul Griffiths
  * \copyright       Copyright 2014 Paul Griffiths. Distributed under the terms
  * of the GNU General Public License. <http://www.gnu.org/licenses/>
@@ -15,7 +14,8 @@
 /*!  File scope variable to hold the time at the start of the game  */
 static time_t start_time;
 
-void worms_time_init(void) {
+void worms_time_init(void)
+{
     start_time = time(NULL);
     if ( start_time == -1 ) {
         perror("worms: couldn't get time");
@@ -23,7 +23,8 @@ void worms_time_init(void) {
     }
 }
 
-long worms_game_time(void) {
+long worms_game_time(void)
+{
     const time_t current_time = time(NULL);
     if ( current_time == -1 ) {
         perror("worms: couldn't get time");
@@ -32,7 +33,8 @@ long worms_game_time(void) {
     return (long)difftime(current_time, start_time);
 }
 
-char * worms_game_time_string(const bool long_format) {
+char * worms_game_time_string(const bool long_format)
+{
     static char time_string[40] = {0};
 
     const long game_time = worms_game_time();
@@ -53,4 +55,3 @@ char * worms_game_time_string(const bool long_format) {
 
     return time_string;
 }
-

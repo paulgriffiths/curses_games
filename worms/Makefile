@@ -20,7 +20,7 @@ CC          := gcc
 LD			:= gcc
 CFLAGS      := -std=c99 -pedantic -Wall -Wextra -ggdb -DDEBUG -DDEBUG_ALL
 CPPFLAGS	:= -I$(INCLDIR)
-LDFLAGS		:= -lcurses -L../timer_game_engine -lpg_curses_tge
+LDFLAGS		:= -L../timer_game_engine -lpg_curses_tge -lcurses
 RM          := rm -f
 SED         := sed
 CTAGS       := ctags
@@ -30,9 +30,7 @@ CLNGLOB      = $(OUT) $(OBJECTS) $(DEPENDS) tags
 default: $(OUT)
 
 $(OUT): $(OBJECTS)
-	$(LD) -o $@ $? $(LDFLAGS)
-
-main: $(OBJECTS)
+	$(LD) -o $@ $^ $(LDFLAGS)
 
 # clean - removes ancilliary files from working directory
 

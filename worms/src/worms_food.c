@@ -1,7 +1,6 @@
 /*!
  * \file            worms_food.c
  * \brief           Implementation of worm food functions.
- * \details         Implementation of worm food functions for curses worms game.
  * \author          Paul Griffiths
  * \copyright       Copyright 2014 Paul Griffiths. Distributed under the terms
  * of the GNU General Public License. <http://www.gnu.org/licenses/>
@@ -19,7 +18,8 @@ static int food_y = 0;
 /*!  File scope variable for total food eaten since start of game  */
 static int food_eaten = -1;
 
-void worms_place_new_food(void) {
+void worms_place_new_food(void)
+{
     bool keep_searching = true;
     const int arena_cols = worms_game_arena_cols();
     const int arena_rows = worms_game_arena_rows();
@@ -55,15 +55,18 @@ void worms_place_new_food(void) {
     ++food_eaten;
 }
 
-void worms_draw_food(void) {
+void worms_draw_food(void)
+{
     worms_write_arena_character(WORM_FOOD_CHARACTER, food_x, food_y);
 }
 
-bool worms_food_here(const int x, const int y) {
+bool worms_food_here(const int x, const int y)
+{
     return (x == food_x && y == food_y) ? true : false;
 }
 
-int worms_get_food_eaten(void) {
+int worms_get_food_eaten(void)
+{
     return food_eaten;
 }
 
