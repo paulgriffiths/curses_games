@@ -47,7 +47,7 @@ worms_game_time(void)
 char *
 worms_game_time_string(const bool long_format)
 {
-    static char time_string[40] = {0};
+    static char time_string[50] = {0};
 
     const long game_time = worms_game_time();
     const int seconds = game_time % 60;
