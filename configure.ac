@@ -18,7 +18,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([CursesGames], [0.9.0])
+AC_INIT([Curses Games], [0.9.0])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([pgcommon/util.c])
 AC_CONFIG_HEADERS([config.h])
@@ -49,7 +49,7 @@ fi
 AC_CHECK_LIB([curses], [getch])
 
 # Checks for header files.
-AC_CHECK_HEADERS([stddef.h stdlib.h string.h sys/ioctl.h sys/time.h unistd.h])
+AC_CHECK_HEADERS([getopt.h stddef.h stdlib.h string.h sys/ioctl.h sys/time.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_CHECK_HEADER_STDBOOL
@@ -58,7 +58,7 @@ AC_TYPE_SIZE_T
 # Checks for library functions.
 AC_FUNC_MALLOC
 AC_FUNC_REALLOC
-AC_CHECK_FUNCS([atexit strdup strerror])
+AC_CHECK_FUNCS([atexit getopt getopt_long strdup strerror])
 
 OS=`uname -s`
 AC_MSG_CHECKING([OS])

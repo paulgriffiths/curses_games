@@ -15,6 +15,6 @@
 #  along with this program; If not, see <https://www.gnu.org/licenses/>.
 
 bin_PROGRAMS = worms
-worms_SOURCES = main.c worms_food.h worms_game.h worms_screen.c worms_time.c worms_worm.c worms_food.c worms_game.c worms.h worms_screen.h worms_time.h worms_worm.h 
+worms_SOURCES = main.c worms_food.h worms_game.h worms_screen.c worms_time.c worms_worm.c worms_food.c worms_game.c worms.h worms_screen.h worms_time.h worms_worm.h options.c options.h
 worms_CPPFLAGS = -I$(top_srcdir)/pgcommon -I$(top_srcdir)/engine
 worms_LDADD = ../engine/libcengine.a ../pgcommon/libpgcommon.a

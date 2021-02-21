@@ -19,18 +19,21 @@
 #include <stdlib.h>
 
 #include "worms.h"
+#include "options.h"
 
 static void print_quit_message(const int end_status);
 
 int
-main(void)
+main(int argc, char ** argv)
 {
+    process_options(argc, argv);
+
     struct tge_parameters parameters;
     parameters.setup_function = worms_game_setup;
     parameters.teardown_function = worms_game_teardown;
     parameters.draw_function = worms_draw_screen;
     parameters.input_function = worms_process_input;
-    parameters.timer_interval = .2;
+    parameters.timer_interval = game_speed / 100.0;
 
     const int end_status = tge_begin_game(&parameters);
     print_quit_message(end_status);
