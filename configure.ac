@@ -58,7 +58,7 @@ AC_TYPE_SIZE_T
 # Checks for library functions.
 AC_FUNC_MALLOC
 AC_FUNC_REALLOC
-AC_CHECK_FUNCS([atexit getopt getopt_long strdup strerror])
+AC_CHECK_FUNCS([atexit getopt getopt_long strdup strerror strtol])
 
 OS=`uname -s`
 AC_MSG_CHECKING([OS])

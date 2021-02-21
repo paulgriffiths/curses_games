@@ -72,7 +72,7 @@ worm_destroy(void)
 void
 worm_set_direction(enum worm_direction direction)
 {
-    if ( abs(worm.last_direction - direction) != 2 ) {
+    if ( abs((int)worm.last_direction - (int)direction) != 2 ) {
         worm.next_direction = direction;
     }
 }
