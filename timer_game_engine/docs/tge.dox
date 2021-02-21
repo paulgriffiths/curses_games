@@ -1,8 +1,0 @@
-/**
-
-\mainpage Timer Game Engine
-
-Timer Game Engine is a curses library for making games where events
-occur on a regular periodic basis, while allowing for input at any
-time.
-*/
