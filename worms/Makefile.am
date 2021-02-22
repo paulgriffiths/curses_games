@@ -1,4 +1,4 @@
-#  BBASIC, an interpreter for a subset of BBC BASIC II.
+#  CURSES GAMES, a selection of Unix terminal games.
 #  Copyright (C) 2021 Paul Griffiths.
 #
 #  This program is free software; you can redistribute it and/or modify
